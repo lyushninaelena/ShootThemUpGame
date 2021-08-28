@@ -9,5 +9,5 @@ AllowShortFunctionsOnASingleLine: Inline
 AllowShortBlocksOnASingleLine: Never
 ColumnLimit: 140
 PointerAlignment: Left
-SortIncludes: Never
+SortIncludes: false
 IndentCaseLabels: true
