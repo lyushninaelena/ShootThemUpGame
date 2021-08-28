@@ -5,7 +5,7 @@ TabWidth: '4'
 BreakBeforeBraces: Allman
 AccessModifierOffset: '-4'
 AlignAfterOpenBracket: DontAlign
-AllowShortFunctionsOnASingleLine: Inline
+AllowShortFunctionsOnASingleLine: InlineOnly
 AllowShortBlocksOnASingleLine: Never
 ColumnLimit: 140
 PointerAlignment: Left
