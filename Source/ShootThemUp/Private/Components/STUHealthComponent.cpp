@@ -3,8 +3,6 @@
 
 #include "Components/STUHealthComponent.h"
 #include "GameFramework/Actor.h"
-#include "Dev/STUIceDamageType.h"
-#include "Dev/STUFireDamageType.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All)
 
@@ -16,8 +14,8 @@ USTUHealthComponent::USTUHealthComponent()
 void USTUHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Health = MaxHealth;	
+	
+	SetHealth(MaxHealth);
 
 	AActor* ComponentOwner = GetOwner();
 	if (ComponentOwner)
@@ -30,19 +28,22 @@ void USTUHealthComponent::BeginPlay()
 void USTUHealthComponent::OnTakeAnyDamage(
 	AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
-	Health -= Damage;
-
-	UE_LOG(LogHealthComponent, Display, TEXT("Damage: %f"), Damage);
-
-	if (DamageType)
+	if (Damage <= 0.0f || IsDead())
 	{
-		if (DamageType->IsA<USTUFireDamageType>())
-		{
-			UE_LOG(LogHealthComponent, Display, TEXT("So hot!!!"));
-		}
-		else if (DamageType->IsA<USTUIceDamageType>())
-		{
-			UE_LOG(LogHealthComponent, Display, TEXT("Very cold!!!"));
-		}
+		return;
 	}
+
+	SetHealth(FMath::Clamp(Health - Damage, 0.0f, MaxHealth));
+	
+	if (IsDead())
+	{
+		OnDeath.Broadcast();
+	}
+}
+
+void USTUHealthComponent::SetHealth(float NewHealth)
+{
+	Health = NewHealth;
+
+	OnHealthChanged.Broadcast(NewHealth);
 }
