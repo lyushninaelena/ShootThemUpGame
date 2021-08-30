@@ -58,20 +58,18 @@ void ASTUBaseCharacter::Tick(float DeltaTime)
 void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	check(PlayerInputComponent);
 
-	if (PlayerInputComponent)
-	{
-		PlayerInputComponent->BindAxis("MoveForward", this, &ASTUBaseCharacter::MoveForward);
-		PlayerInputComponent->BindAxis("MoveRight", this, &ASTUBaseCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("MoveForward", this, &ASTUBaseCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ASTUBaseCharacter::MoveRight);
 
-		PlayerInputComponent->BindAxis("LookUp", this, &ASTUBaseCharacter::AddControllerPitchInput);
-		PlayerInputComponent->BindAxis("TurnAround", this, &ASTUBaseCharacter::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &ASTUBaseCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("TurnAround", this, &ASTUBaseCharacter::AddControllerYawInput);
 
-		PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUBaseCharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUBaseCharacter::Jump);
 
-		PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUBaseCharacter::StartRunning);
-		PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUBaseCharacter::StopRunning);
-	}
+	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUBaseCharacter::StartRunning);
+	PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUBaseCharacter::StopRunning);
 }
 
 void ASTUBaseCharacter::MoveForward(float Amount)
@@ -126,7 +124,7 @@ void ASTUBaseCharacter::OnDeath()
 
 	PlayAnimMontage(DeathAnimMontage);
 	GetCharacterMovement()->DisableMovement();
-	SetLifeSpan(5.0f);
+	SetLifeSpan(LifeSpanOnDeath);
 
 	if (Controller)
 	{
@@ -141,7 +139,7 @@ void ASTUBaseCharacter::OnHealthChanged(float Health)
 
 void ASTUBaseCharacter::OnGroundLanded(const FHitResult& HitResult)
 {
-	const float FallVelocityZ = -GetCharacterMovement()->Velocity.Z;
+	const float FallVelocityZ = -GetVelocity().Z;
 	UE_LOG(LogBaseCharacter, Display, TEXT("On Landed: %f"), FallVelocityZ);
 
 	if (FallVelocityZ < LandedDamageVelocity.X)
