@@ -1,6 +1,5 @@
 // Shoot Them Up Game. All Rights Reserved.
 
-
 #include "Components/STUWeaponComponent.h"
 #include "Weapon/STUBaseWeapon.h"
 #include "GameFramework/Character.h"
@@ -12,29 +11,20 @@ USTUWeaponComponent::USTUWeaponComponent()
 
 void USTUWeaponComponent::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();
 
 	SpawnWeapon();
 }
 
 void USTUWeaponComponent::SpawnWeapon()
 {
-	if (!GetWorld())
-	{
-		return;
-	}
+	if (!GetWorld()) return;
 
 	ACharacter* Character = Cast<ACharacter>(GetOwner());
-	if (!Character)
-	{
-		return;
-	}
+	if (!Character) return;
 
 	CurrentWeapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass);
-	if (!CurrentWeapon)
-	{
-		return;
-	}
+	if (!CurrentWeapon) return;
 
 	FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
 	CurrentWeapon->AttachToComponent(Character->GetMesh(), AttachmentRules, WeaponAttachPointName);
@@ -42,10 +32,7 @@ void USTUWeaponComponent::SpawnWeapon()
 
 void USTUWeaponComponent::Fire()
 {
-	if (!CurrentWeapon)
-	{
-		return;
-	}
+	if (!CurrentWeapon) return;
 
 	CurrentWeapon->Fire();
 }

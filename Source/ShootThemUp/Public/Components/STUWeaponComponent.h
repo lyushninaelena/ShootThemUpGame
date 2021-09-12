@@ -8,12 +8,12 @@
 
 class ASTUBaseWeapon;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	USTUWeaponComponent();
 
 	void Fire();
@@ -26,7 +26,7 @@ protected:
 	FName WeaponAttachPointName = "WeaponSocket";
 
 	virtual void BeginPlay() override;
-		
+
 private:
 	UPROPERTY()
 	ASTUBaseWeapon* CurrentWeapon = nullptr;

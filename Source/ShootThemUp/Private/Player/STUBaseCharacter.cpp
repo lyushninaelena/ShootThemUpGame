@@ -1,6 +1,5 @@
 // Shoot Them Up Game. All Rights Reserved.
 
-
 #include "Player/STUBaseCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
@@ -13,11 +12,9 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseCharacter, All, All)
 
-// Sets default values
 ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
 	: Super(ObjInit.SetDefaultSubobjectClass<USTUCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
@@ -37,7 +34,6 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
 	WeaponComponent = CreateDefaultSubobject<USTUWeaponComponent>("WeaponComponent");
 }
 
-// Called when the game starts or when spawned
 void ASTUBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -53,13 +49,11 @@ void ASTUBaseCharacter::BeginPlay()
 	LandedDelegate.AddDynamic(this, &ASTUBaseCharacter::OnGroundLanded);
 }
 
-// Called every frame
 void ASTUBaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-// Called to bind functionality to input
 void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -88,10 +82,7 @@ void ASTUBaseCharacter::MoveForward(float Amount)
 
 void ASTUBaseCharacter::MoveRight(float Amount)
 {
-	if (Amount == 0.0f)
-	{
-		return;
-	}
+	if (Amount == 0.0f) return;
 
 	AddMovementInput(GetActorRightVector(), Amount);
 }
@@ -113,10 +104,7 @@ bool ASTUBaseCharacter::IsRunning() const
 
 float ASTUBaseCharacter::GetMovementDirection() const
 {
-	if (GetVelocity().IsZero())
-	{
-		return 0.0f;
-	}
+	if (GetVelocity().IsZero()) return 0.0f;
 
 	const FVector VelocityNormal = GetVelocity().GetSafeNormal();
 	const float AngleBetween = FMath::Acos(FVector::DotProduct(GetActorForwardVector(), VelocityNormal));
@@ -150,10 +138,7 @@ void ASTUBaseCharacter::OnGroundLanded(const FHitResult& HitResult)
 	const float FallVelocityZ = -GetVelocity().Z;
 	UE_LOG(LogBaseCharacter, Display, TEXT("On Landed: %f"), FallVelocityZ);
 
-	if (FallVelocityZ < LandedDamageVelocity.X)
-	{
-		return;
-	}
+	if (FallVelocityZ < LandedDamageVelocity.X) return;
 
 	const float FinalDamage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
 	UE_LOG(LogBaseCharacter, Display, TEXT("Landed Damage: %f"), FinalDamage);

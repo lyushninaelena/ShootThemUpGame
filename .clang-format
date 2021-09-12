@@ -11,3 +11,5 @@ ColumnLimit: 140
 PointerAlignment: Left
 SortIncludes: false
 IndentCaseLabels: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: WithoutElse

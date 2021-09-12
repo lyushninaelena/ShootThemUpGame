@@ -16,5 +16,4 @@ public:
 
 private:
 	void DrawCrosshair();
-	
 };

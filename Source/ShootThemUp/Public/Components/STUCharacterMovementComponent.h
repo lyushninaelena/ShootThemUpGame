@@ -6,9 +6,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "STUCharacterMovementComponent.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class SHOOTTHEMUP_API USTUCharacterMovementComponent : public UCharacterMovementComponent
 {
@@ -19,5 +16,4 @@ public:
 	float RunModifier = 2.0f;
 
 	virtual float GetMaxSpeed() const override;
-	
 };

@@ -12,8 +12,8 @@ UCLASS()
 class SHOOTTHEMUP_API ASTUBaseWeapon : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	ASTUBaseWeapon();
 
 	virtual void Fire();
@@ -23,5 +23,4 @@ protected:
 	USkeletalMeshComponent* WeaponMeshComponent;
 
 	virtual void BeginPlay() override;
-
 };

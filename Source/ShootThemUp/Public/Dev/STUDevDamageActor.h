@@ -10,8 +10,8 @@ UCLASS()
 class SHOOTTHEMUP_API ASTUDevDamageActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	ASTUDevDamageActor();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -35,7 +35,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
-
 };

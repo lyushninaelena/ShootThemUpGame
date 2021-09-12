@@ -1,6 +1,5 @@
 // Shoot Them Up Game. All Rights Reserved.
 
-
 #include "Components/STUHealthComponent.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
@@ -16,7 +15,7 @@ USTUHealthComponent::USTUHealthComponent()
 void USTUHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	SetHealth(MaxHealth);
 
 	AActor* ComponentOwner = GetOwner();
@@ -24,21 +23,17 @@ void USTUHealthComponent::BeginPlay()
 	{
 		ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &USTUHealthComponent::OnTakeAnyDamage);
 	}
-
 }
 
 void USTUHealthComponent::OnTakeAnyDamage(
 	AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
-	if (Damage <= 0.0f || IsDead() || !GetWorld())
-	{
-		return;
-	}
+	if (Damage <= 0.0f || IsDead() || !GetWorld()) return;
 
 	SetHealth(Health - Damage);
 
 	GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
-	
+
 	if (IsDead())
 	{
 		OnDeath.Broadcast();
