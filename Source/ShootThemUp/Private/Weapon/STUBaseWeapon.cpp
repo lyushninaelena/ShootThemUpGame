@@ -54,14 +54,24 @@ void ASTUBaseWeapon::MakeShot()
 
 	FHitResult HitResult;
 	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionQueryParams);
+	bool bShotDown(false);
 	if (HitResult.bBlockingHit)
 	{
-		DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.0f);
-		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
+		const FVector MuzzleDirection = SocketTransform.GetRotation().GetForwardVector();
+		const FVector ImpactPointDirection = HitResult.ImpactPoint - SocketTransform.GetLocation();
+		const float AngleRad = FMath::Acos(FVector::DotProduct(MuzzleDirection,  ImpactPointDirection) / (MuzzleDirection.Size() * ImpactPointDirection.Size()));
+		const float Angle = FMath::RadiansToDegrees(AngleRad);
+		UE_LOG(LogBaseWeapon, Display, TEXT("Angle: %f"), Angle);
 
-		UE_LOG(LogBaseWeapon, Display, TEXT("Bone: %s"), *HitResult.BoneName.ToString());
+		if (FMath::Abs(Angle) <= 90.0)
+		{
+			bShotDown = true;
+			DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.0f);
+			DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
+			UE_LOG(LogBaseWeapon, Display, TEXT("Bone: %s"), *HitResult.BoneName.ToString());
+		}
 	}
-	else
+	if (!bShotDown)
 	{
 		DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), TraceEnd, FColor::Blue, false, 3.0f);
 	}

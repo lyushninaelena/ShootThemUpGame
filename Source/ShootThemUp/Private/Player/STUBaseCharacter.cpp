@@ -130,7 +130,7 @@ void ASTUBaseCharacter::OnDeath()
 
 void ASTUBaseCharacter::OnHealthChanged(float Health)
 {
-	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("% .0f"), Health)));
+	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
 }
 
 void ASTUBaseCharacter::OnGroundLanded(const FHitResult& HitResult)
