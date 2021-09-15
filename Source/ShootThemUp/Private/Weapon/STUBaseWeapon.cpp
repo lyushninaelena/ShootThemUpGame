@@ -4,6 +4,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "STUBaseCharacter.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
 
@@ -28,7 +29,7 @@ void ASTUBaseWeapon::Fire()
 	MakeShot();
 }
 
-void ASTUBaseWeapon::MakeShot() const
+void ASTUBaseWeapon::MakeShot()
 {
 	if (!GetWorld()) return;
 	
@@ -43,6 +44,8 @@ void ASTUBaseWeapon::MakeShot() const
 
 	if (HitResult.bBlockingHit && IsForwardShot(HitResult.ImpactPoint, MuzzleLocation, MuzzleDirection))
 	{
+		MakeDamage(HitResult);
+		
 		DrawDebugLine(GetWorld(), MuzzleLocation, HitResult.ImpactPoint, FColor::Red, false, 3.0f);
 		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
 	}
@@ -107,4 +110,12 @@ bool ASTUBaseWeapon::IsForwardShot(const FVector& ImpactPoint, const FVector&Muz
 	const float Angle = FMath::RadiansToDegrees(AngleRad);
 
 	return FMath::Abs(Angle) <= 90.0f;
+}
+
+void ASTUBaseWeapon::MakeDamage(const FHitResult& HitResult)
+{
+	ASTUBaseCharacter* DamagedActor = Cast<ASTUBaseCharacter>(HitResult.GetActor());
+	if (!DamagedActor) return;
+
+	DamagedActor->TakeDamage(DamageAmount, FDamageEvent{}, GetPlayerController(), this);
 }

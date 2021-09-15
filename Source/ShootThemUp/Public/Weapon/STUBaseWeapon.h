@@ -27,14 +27,18 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	float TraceMaxDistance = 1500.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	float DamageAmount = 10.0f;
 		
 	virtual void BeginPlay() override;
 
-	void MakeShot() const;
+	void MakeShot();
 	APlayerController* GetPlayerController() const;
 	bool GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const;
 	void GetMuzzleData(FVector& MuzzleLocation, FVector& MuzzleDirection) const;
 	bool GetTraceData(FVector& TraceStart, FVector& TraceEnd) const;
 	bool MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd) const;
 	bool IsForwardShot(const FVector& ImpactPoint, const FVector&MuzzleLocation, const FVector& MuzzleDirection) const;
+	void MakeDamage(const FHitResult& HitResult);
 };
