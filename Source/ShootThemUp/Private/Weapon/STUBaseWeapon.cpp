@@ -26,39 +26,14 @@ void ASTUBaseWeapon::BeginPlay()
 
 void ASTUBaseWeapon::StartFire()
 {
-	MakeShot();
-	GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ASTUBaseWeapon::MakeShot, TimeBetweenShots, true);
 }
 
 void ASTUBaseWeapon::StopFire()
 {
-	GetWorldTimerManager().ClearTimer(ShotTimerHandle);
 }
 
 void ASTUBaseWeapon::MakeShot()
 {
-	if (!GetWorld()) return;
-	
-	FVector TraceStart, TraceEnd;
-	if (!GetTraceData(TraceStart, TraceEnd)) return;
-
-	FVector MuzzleLocation, MuzzleDirection;
-	GetMuzzleData(MuzzleLocation, MuzzleDirection);
-
-	FHitResult HitResult;
-	if (!MakeHit(HitResult, TraceStart, TraceEnd)) return;
-
-	if (HitResult.bBlockingHit && IsForwardShot(HitResult.ImpactPoint, MuzzleLocation, MuzzleDirection))
-	{
-		MakeDamage(HitResult);
-		
-		DrawDebugLine(GetWorld(), MuzzleLocation, HitResult.ImpactPoint, FColor::Red, false, 3.0f);
-		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
-	}
-	else
-	{
-		DrawDebugLine(GetWorld(), MuzzleLocation, TraceEnd, FColor::Blue, false, 3.0f);
-	}
 }
 
 APlayerController* ASTUBaseWeapon::GetPlayerController() const
@@ -92,8 +67,7 @@ bool ASTUBaseWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const
 	if (!GetPlayerViewPoint(ViewLocation, ViewRotation)) return false;
 	
 	TraceStart = ViewLocation;
-	const float HalfRad = FMath::DegreesToRadians(BulletSpread); 
-	const FVector ShootDirection = FMath::VRandCone(ViewRotation.Vector(), HalfRad);
+	const FVector ShootDirection = ViewRotation.Vector();
 	TraceEnd = TraceStart + ShootDirection * TraceMaxDistance;
 	return true;
 }
