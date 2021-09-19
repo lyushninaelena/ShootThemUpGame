@@ -92,11 +92,3 @@ bool ASTUBaseWeapon::IsForwardShot(const FVector& ImpactPoint, const FVector&Muz
 
 	return FMath::Abs(Angle) <= 90.0f;
 }
-
-void ASTUBaseWeapon::MakeDamage(const FHitResult& HitResult)
-{
-	ASTUBaseCharacter* DamagedActor = Cast<ASTUBaseCharacter>(HitResult.GetActor());
-	if (!DamagedActor) return;
-
-	DamagedActor->TakeDamage(DamageAmount, FDamageEvent{}, GetPlayerController(), this);
-}
