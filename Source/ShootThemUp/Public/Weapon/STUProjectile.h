@@ -6,9 +6,12 @@
 
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+
 #include "STUProjectile.generated.h"
 
 class USphereComponent;
+class UProjectileMovementComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUProjectile : public AActor
@@ -18,6 +21,8 @@ class SHOOTTHEMUP_API ASTUProjectile : public AActor
 public:	
 	ASTUProjectile();
 
+	void SetShotDirection(const FVector& Direction) { ShotDirection = Direction; };
+
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Weapon")
 	USphereComponent* CollisionComponent;
@@ -25,5 +30,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "1.0"))
 	float CollisionSphereRadius = 5.0f;
 	
+	UPROPERTY(VisibleDefaultsOnly, Category = "Weapon")
+	UProjectileMovementComponent* MovementComponent;
+	
 	virtual void BeginPlay() override;
+
+private:
+	FVector ShotDirection;
 };
+ 
