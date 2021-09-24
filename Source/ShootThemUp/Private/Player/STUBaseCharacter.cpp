@@ -10,6 +10,8 @@
 #include "Components/STUWeaponComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Controller.h"
+#include "Kismet/KismetStringLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseCharacter, All, All)
 
