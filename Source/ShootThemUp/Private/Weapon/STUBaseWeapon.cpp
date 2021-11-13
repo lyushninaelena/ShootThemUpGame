@@ -21,7 +21,10 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 void ASTUBaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+
 	check(WeaponMesh);
+
+	CurrentAmmo = DefaultAmmo;
 }
 
 void ASTUBaseWeapon::StartFire()
@@ -91,4 +94,44 @@ bool ASTUBaseWeapon::IsForwardShot(const FVector& ImpactPoint, const FVector&Muz
 	const float Angle = FMath::RadiansToDegrees(AngleRad);
 
 	return FMath::Abs(Angle) <= 90.0f;
+}
+
+void ASTUBaseWeapon::DecreaseAmmo()
+{
+	CurrentAmmo.Bullets--;
+	LogAmmo();
+
+	if (IsClipEmpty() && !IsAmmoEmpty())
+	{
+		ChangeClip();
+	}
+}
+
+bool ASTUBaseWeapon::IsAmmoEmpty() const
+{
+	return !CurrentAmmo.Infinite && CurrentAmmo.Clips == 0 && IsClipEmpty();
+}
+
+bool ASTUBaseWeapon::IsClipEmpty() const
+{
+	return CurrentAmmo.Bullets == 0;
+}
+
+void ASTUBaseWeapon::ChangeClip()
+{
+	CurrentAmmo.Bullets = DefaultAmmo.Bullets;
+
+	if (!CurrentAmmo.Infinite)
+	{
+		CurrentAmmo.Clips--;
+	}
+
+	UE_LOG(LogBaseWeapon, Display, TEXT("------- Change Clip -------"))
+}
+
+void ASTUBaseWeapon::LogAmmo()
+{
+	FString AmmotInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Bullets) + " / ";
+	AmmotInfo += CurrentAmmo.Infinite ? "Infinite" : "Clips: " + FString::FromInt(CurrentAmmo.Clips);
+	UE_LOG(LogBaseWeapon, Display, TEXT("%s"), *AmmotInfo);
 }
