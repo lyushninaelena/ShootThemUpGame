@@ -45,6 +45,7 @@ void USTUWeaponComponent::SpawnWeapons()
 		ASTUBaseWeapon* Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(OneWeaponData.WeaponClass);
 		if (!Weapon) continue;
 
+		Weapon->OnClipEmpty.AddUObject(this, &USTUWeaponComponent::OnClipEmpty);
 		Weapon->SetOwner(Character);
 		Weapons.Add(Weapon);
 
@@ -74,10 +75,7 @@ void USTUWeaponComponent::NextWeapon()
 
 void USTUWeaponComponent::Reload()
 {
-	if (!CanReload()) return;
-	
-	ReloadAnimInProgress = true;
-	PlayAnimMontage(CurrentRloadAnimMontage);
+	ChangeClip();
 }
 
 void USTUWeaponComponent::AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName)
@@ -172,5 +170,21 @@ bool USTUWeaponComponent::CanEquip() const
 
 bool USTUWeaponComponent::CanReload() const
 {
-	return CurrentWeapon && !EquipAnimInProgress && !ReloadAnimInProgress;
+	return CurrentWeapon && !EquipAnimInProgress && !ReloadAnimInProgress && CurrentWeapon->CanReload();
+}
+
+void USTUWeaponComponent::OnClipEmpty()
+{
+	ChangeClip();
+}
+
+void USTUWeaponComponent::ChangeClip()
+{
+	if (!CanReload()) return;
+
+	CurrentWeapon->StopFire();
+	CurrentWeapon->ChangeClip();
+	
+	ReloadAnimInProgress = true;
+	PlayAnimMontage(CurrentRloadAnimMontage);
 }

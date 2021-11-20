@@ -75,6 +75,9 @@ private:
 	bool CanEquip() const;
 	bool CanReload() const;
 
+	void OnClipEmpty();
+	void ChangeClip();
+	
 	template<typename T>
 	T* FindNotifyByClass(UAnimSequenceBase* Animation)
 	{
