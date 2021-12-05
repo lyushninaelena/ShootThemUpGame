@@ -5,6 +5,8 @@
 
 void ASTULauncherWeapon::StartFire()
 {
+	Super::StartFire();
+
 	MakeShot();
 }
 

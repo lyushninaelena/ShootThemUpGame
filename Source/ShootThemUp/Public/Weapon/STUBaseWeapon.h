@@ -21,13 +21,14 @@ public:
 
 	virtual void StartFire();
 	virtual void StopFire();
+	bool IsFiring() const { return FireInProgress; }
 
 	void ChangeClip();
 	bool CanReload() const;
-
+	
 	FWeaponUIData GetUIData() const { return UIData; }
 	FAmmoData GetAmmoData() const { return CurrentAmmo; }
-
+	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	USkeletalMeshComponent* WeaponMesh;
@@ -62,4 +63,6 @@ protected:
 
 private:
 	FAmmoData CurrentAmmo;
+
+	bool FireInProgress = false;
 };

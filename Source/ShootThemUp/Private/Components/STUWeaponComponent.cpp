@@ -104,6 +104,11 @@ bool USTUWeaponComponent::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
 	return false;
 }
 
+bool USTUWeaponComponent::IsFiring() const
+{
+	return CurrentWeapon && CurrentWeapon->IsFiring();
+}
+
 void USTUWeaponComponent::AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName)
 {
 	if (!Weapon || !SceneComponent) return;

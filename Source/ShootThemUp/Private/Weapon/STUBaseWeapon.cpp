@@ -31,10 +31,12 @@ void ASTUBaseWeapon::BeginPlay()
 
 void ASTUBaseWeapon::StartFire()
 {
+	FireInProgress = true;
 }
 
 void ASTUBaseWeapon::StopFire()
 {
+	FireInProgress = false;
 }
 
 void ASTUBaseWeapon::MakeShot()

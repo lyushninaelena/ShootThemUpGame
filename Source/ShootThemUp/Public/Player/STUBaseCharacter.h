@@ -69,6 +69,7 @@ private:
 	void MoveRight(float Amount);
 	void StartRunning();
 	void StopRunning();
+	void StartFire();
 
 	void OnDeath();
 	void OnHealthChanged(float Health);
