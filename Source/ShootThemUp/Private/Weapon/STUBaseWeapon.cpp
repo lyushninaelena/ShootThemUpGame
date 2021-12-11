@@ -182,7 +182,7 @@ bool ASTUBaseWeapon::TryToAddAmmo(int32 ClipsAmount)
 		else
 		{
 			CurrentAmmo.Clips = DefaultAmmo.Clips;
-			CurrentAmmo.Clips = DefaultAmmo.Bullets;
+			CurrentAmmo.Bullets = DefaultAmmo.Bullets;
 			UE_LOG(LogBaseWeapon, Display, TEXT("Ammo is full now"));
 		}
 	}

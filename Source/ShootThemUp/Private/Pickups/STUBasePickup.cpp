@@ -34,6 +34,28 @@ void ASTUBasePickup::NotifyActorBeginOverlap(AActor* OtherActor)
 	{
 		PickupWasTaken();
 	}
+	else if (Pawn)
+	{
+		OverlappingPawns.Add(Pawn);
+
+		if (!OverlappingPawnsTimerHandle.IsValid())
+		{
+			GetWorldTimerManager().SetTimer(
+				OverlappingPawnsTimerHandle, this, &ASTUBasePickup::CheckOverlappingPaws, OverlappingPawnsCheckTime, true);
+		}
+	}
+}
+
+void ASTUBasePickup::NotifyActorEndOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorEndOverlap(OtherActor);
+	const auto Pawn = Cast<APawn>(OtherActor);
+	OverlappingPawns.Remove(Pawn);
+
+	if (OverlappingPawns.Num() == 0 && OverlappingPawnsTimerHandle.IsValid())
+	{
+		GetWorldTimerManager().ClearTimer(OverlappingPawnsTimerHandle);
+	}
 }
 
 void ASTUBasePickup::Tick(float DeltaTime)
@@ -76,4 +98,16 @@ void ASTUBasePickup::GenerateRotationYaw()
 {
 	const float Direction = FMath::RandBool() ? 1.0f : -1.0f;
 	RotationYaw = FMath::RandRange(1.0f, 2.0f) * Direction;
+}
+
+void ASTUBasePickup::CheckOverlappingPaws()
+{
+	for (APawn* Pawn : OverlappingPawns)
+	{
+		if (GivePickupTo(Pawn)) 
+		{
+			PickupWasTaken();
+			break;
+		}
+	}
 }
