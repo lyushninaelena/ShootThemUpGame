@@ -2,11 +2,19 @@
 
 
 #include "Pickups/STUAmmoPickup.h"
+#include "STUHealthComponent.h"
+#include "STUWeaponComponent.h"
+#include "STUUtils.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthPickup, All, All)
 
-bool ASTUAmmoPickup::GivePickupTo(const APawn* PlayerPawn)
+bool ASTUAmmoPickup::GivePickupTo(APawn* PlayerPawn)
 {
-	UE_LOG(LogHealthPickup, Display, TEXT("Ammo was taken"))
-	return true;
+	const USTUHealthComponent* HealthComponent = STUUtils::GetSTUPlayerComponent<USTUHealthComponent>(PlayerPawn);
+	if (!HealthComponent || HealthComponent->IsDead()) return false;
+
+	USTUWeaponComponent* WeaponComponent = STUUtils::GetSTUPlayerComponent<USTUWeaponComponent>(PlayerPawn);
+	if (!WeaponComponent) return false;
+	
+	return WeaponComponent->TryToAddAmmo(WeaponType, ClipsAmount);
 }

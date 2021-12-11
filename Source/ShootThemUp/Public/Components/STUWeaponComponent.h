@@ -69,8 +69,10 @@ private:
 	bool CanEquip() const;
 	bool CanReload() const;
 
-	void OnClipEmpty();
+	void OnClipEmpty(ASTUBaseWeapon* AmmoEmptyWeapon);
 	void ChangeClip();
 	
 	
+public:
+	bool TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount);
 };

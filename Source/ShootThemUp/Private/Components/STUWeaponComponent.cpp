@@ -214,9 +214,18 @@ bool USTUWeaponComponent::CanReload() const
 	return CurrentWeapon && !EquipAnimInProgress && !ReloadAnimInProgress && CurrentWeapon->CanReload();
 }
 
-void USTUWeaponComponent::OnClipEmpty()
+void USTUWeaponComponent::OnClipEmpty(ASTUBaseWeapon* AmmoEmptyWeapon)
 {
-	ChangeClip();
+	if (!AmmoEmptyWeapon) return;
+
+	if (CurrentWeapon == AmmoEmptyWeapon)
+	{
+		ChangeClip();
+	}
+	else
+	{
+		AmmoEmptyWeapon->ChangeClip();
+	}
 }
 
 void USTUWeaponComponent::ChangeClip()
@@ -228,4 +237,17 @@ void USTUWeaponComponent::ChangeClip()
 	
 	ReloadAnimInProgress = true;
 	PlayAnimMontage(CurrentRloadAnimMontage);
+}
+
+bool USTUWeaponComponent::TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount)
+{
+	for (ASTUBaseWeapon* Weapon : Weapons)
+	{
+		if (Weapon && Weapon->IsA(WeaponType))
+		{
+			return Weapon->TryToAddAmmo(ClipsAmount);
+		}
+	}
+
+	return false;
 }

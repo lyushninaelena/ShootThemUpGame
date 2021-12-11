@@ -28,7 +28,7 @@ void ASTUBasePickup::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	const APawn* Pawn = Cast<APawn>(OtherActor);
+	APawn* Pawn = Cast<APawn>(OtherActor);
 	if (GivePickupTo(Pawn))
 	{
 		PickupWasTaken();
@@ -41,7 +41,7 @@ void ASTUBasePickup::Tick(float DeltaTime)
 
 }
 
-bool ASTUBasePickup::GivePickupTo(const APawn* PlayerPawn)
+bool ASTUBasePickup::GivePickupTo(APawn* PlayerPawn)
 {
 	return false;
 }
@@ -60,9 +60,9 @@ void ASTUBasePickup::PickupWasTaken()
 
 void ASTUBasePickup::Respawn()
 {
-	CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	if (GetRootComponent())
 	{
 		GetRootComponent()->SetVisibility(true, true);
 	}
+	CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 }

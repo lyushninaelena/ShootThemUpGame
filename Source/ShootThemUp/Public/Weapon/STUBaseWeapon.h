@@ -59,10 +59,15 @@ protected:
 	void DecreaseAmmo();
 	bool IsAmmoEmpty() const;
 	bool IsClipEmpty() const;
+	bool IsAmmoFull() const;
+
 	void LogAmmo();
 
 private:
 	FAmmoData CurrentAmmo;
 
 	bool FireInProgress = false;
+
+public:
+	bool TryToAddAmmo(int32 ClipsAmount);
 };
