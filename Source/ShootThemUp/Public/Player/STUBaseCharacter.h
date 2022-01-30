@@ -61,6 +61,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	float GetMovementDirection() const;
 
+protected:
+	virtual void OnDeath();
+
 private:
 	bool WantsToRun = false;
 	bool IsMovingForward = false;
@@ -71,7 +74,6 @@ private:
 	void StopRunning();
 	void StartFire();
 
-	void OnDeath();
 	void OnHealthChanged(float Health);
 
 	UFUNCTION()
