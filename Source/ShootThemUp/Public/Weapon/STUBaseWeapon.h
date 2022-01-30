@@ -28,6 +28,7 @@ public:
 	
 	FWeaponUIData GetUIData() const { return UIData; }
 	FAmmoData GetAmmoData() const { return CurrentAmmo; }
+	bool IsAmmoEmpty() const;
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -57,7 +58,6 @@ protected:
 	bool IsForwardShot(const FVector& ImpactPoint, const FVector& MuzzleLocation, const FVector& MuzzleDirection) const;
 
 	void DecreaseAmmo();
-	bool IsAmmoEmpty() const;
 	bool IsClipEmpty() const;
 	bool IsAmmoFull() const;
 
