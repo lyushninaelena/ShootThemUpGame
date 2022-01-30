@@ -53,10 +53,26 @@ APlayerController* ASTUBaseWeapon::GetPlayerController() const
 
 bool ASTUBaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const
 {
-	APlayerController* Controller = GetPlayerController();
-	if (!Controller) return false;
+	const ACharacter* STUCharacter = Cast<ACharacter>(GetOwner());
+	if (STUCharacter == nullptr)
+	{
+		return false;
+	}
 
-	Controller->GetPlayerViewPoint(ViewLocation, ViewRotation);
+	if (STUCharacter->IsPlayerControlled())
+	{
+		APlayerController* Controller = GetPlayerController();
+		if (!Controller) return false;
+
+		Controller->GetPlayerViewPoint(ViewLocation, ViewRotation);
+	}
+	else
+	{
+		const FTransform SocketTransform = WeaponMesh->GetSocketTransform(MuzzleSocketName);
+		ViewLocation = SocketTransform.GetLocation();
+		ViewRotation = SocketTransform.GetRotation().Rotator();
+	}
+
 	return true;
 }
 
