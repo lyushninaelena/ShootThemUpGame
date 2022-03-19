@@ -4,6 +4,14 @@
 #include "Components/STUAIWeaponComponent.h"
 #include "Weapon/STUBaseWeapon.h"
 
+void USTUAIWeaponComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	CurrentWeaponIndex = FMath::Rand() % (Weapons.Num() - 1);
+	EquipWeapon(CurrentWeaponIndex);
+}
+
 void USTUAIWeaponComponent::StartFire()
 {
 	if (!CanFire())

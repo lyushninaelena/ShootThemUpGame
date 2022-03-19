@@ -4,8 +4,6 @@
 #include "STUHealthComponent.h"
 #include "STUUtils.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogHealthPickup, All, All)
-
 bool ASTUHealthPickup::GivePickupTo(APawn* PlayerPawn)
 {
 	USTUHealthComponent* HealthComponent = STUUtils::GetSTUPlayerComponent<USTUHealthComponent>(PlayerPawn);

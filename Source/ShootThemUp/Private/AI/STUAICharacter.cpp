@@ -19,7 +19,7 @@
 	}
  }
 
-void ASTUAICharacter::OnDeath()
+ void ASTUAICharacter::OnDeath()
 {
 	Super::OnDeath();
 

@@ -32,6 +32,7 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+	bool CouldBeTaken() const;
 
 private:
 	float RotationYaw = 0.0f;
@@ -40,6 +41,7 @@ private:
 	TArray<APawn*> OverlappingPawns;
 
 	FTimerHandle OverlappingPawnsTimerHandle;
+	FTimerHandle RespawnTimerHandle;
 	float OverlappingPawnsCheckTime = 0.1f;
 
 	virtual bool GivePickupTo(APawn* PlayerPawn);

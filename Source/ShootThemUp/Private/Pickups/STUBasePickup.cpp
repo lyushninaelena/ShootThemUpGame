@@ -78,8 +78,7 @@ void ASTUBasePickup::PickupWasTaken()
 		GetRootComponent()->SetVisibility(false, true);
 	}
 
-	FTimerHandle TimerHandle;
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &ASTUBasePickup::Respawn, RespawnTime);
+	GetWorldTimerManager().SetTimer(RespawnTimerHandle, this, &ASTUBasePickup::Respawn, RespawnTime);
 }
 
 void ASTUBasePickup::Respawn()
@@ -110,4 +109,9 @@ void ASTUBasePickup::CheckOverlappingPaws()
 			break;
 		}
 	}
+}
+
+bool ASTUBasePickup::CouldBeTaken() const
+{
+	return !GetWorldTimerManager().IsTimerActive(RespawnTimerHandle);
 }

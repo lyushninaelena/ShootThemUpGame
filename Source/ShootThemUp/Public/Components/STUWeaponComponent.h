@@ -24,6 +24,7 @@ public:
 
 	bool GetCurrentWeaponUIData(FWeaponUIData& UIData) const;
 	bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
+	bool IsWeaponAmmoEmpty(TSubclassOf<ASTUBaseWeapon> WeaponType) const;
 
 	bool IsFiring() const;
 
@@ -74,7 +75,6 @@ private:
 
 	void OnClipEmpty(ASTUBaseWeapon* AmmoEmptyWeapon);
 	void ChangeClip();
-	
 	
 public:
 	bool TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount);

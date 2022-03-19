@@ -104,6 +104,19 @@ bool USTUWeaponComponent::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
 	return false;
 }
 
+bool USTUWeaponComponent::IsWeaponAmmoEmpty(TSubclassOf<ASTUBaseWeapon> WeaponType) const
+{
+	for (ASTUBaseWeapon* Weapon : Weapons)
+	{
+		if (Weapon->IsA(WeaponType))
+		{
+			return Weapon->IsAmmoEmpty();
+		}
+	}
+
+	return false;
+}
+
 bool USTUWeaponComponent::IsFiring() const
 {
 	return CurrentWeapon && CurrentWeapon->IsFiring();
